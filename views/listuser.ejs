@@ -1,0 +1,248 @@
+<!-- <h1>List of users</h1>
+
+<ul>
+    <% users.forEach(function(u) { %>
+        <li><%= u.firstname %> <%= u.lastname %> <a href="/api/user/<%= u._id %> ">oki</a> <span class="city"> <%= u.city %></span></li>
+    <% }); %>
+</ul> -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Fix It</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/sb-admin.css" rel="stylesheet">
+
+    <!-- Morris Charts CSS -->
+    <link href="css/plugins/morris.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+
+    <style type="text/css">
+   html, body {
+     height: 100%;
+     margin: 0;
+     padding: 0;
+   }
+
+   #map {
+     height: 100%;
+     width: 50%
+   }
+
+   @media print {
+     html, body {
+       height: auto;
+     }
+
+     #map_canvas {
+       height: 650px;
+     }
+   }
+   </style>
+  </head>
+  <body style="width: 100%;">>
+    <div id="map"></div>
+    <div>
+
+      <button id="btn">Get LatLong</button>
+
+    </div>
+    <!-- Navigation -->
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="index.html">FIX IT</a>
+        </div>
+        <!-- Top Menu Items -->
+        <ul class="nav navbar-right top-nav">
+          
+        </ul>
+        <!-- Sidebar Menu Items - These collapse to the responsive navigation menu on small screens -->
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav side-nav">
+                 <li>
+                    <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Home</a>
+                </li>
+                <li >
+                    <a href="/api/user"><i class="fa fa-user"></i> Users</a>
+                </li>
+                <li class="active">
+                    <a href="/api/search"><i class="fa  fa-search"></i> Search</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </nav>
+    <div id="page-wrapper">
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+
+<div class="container">
+<br><br>
+<div class="modal-body row">
+<div class="col-md-6">
+<!-- Your first column here -->
+</div>
+<div class="col-md-6">
+<!-- Your second column here -->
+<div class="row" style="width: 40%;position: fixed;top: 50px;" >
+    <div class="panel panel-default widget">
+        <div class="panel-heading">
+            <span class="glyphicon glyphicon-user"></span>
+            <h3 class="panel-title">
+                Results</h3>
+
+        </div>
+        <div class="panel-body">
+            <ul class="list-group">
+                <% users.forEach(function(u) { %>
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-xs-2 col-md-1">
+                            <img src="http://placehold.it/80" class="img-circle img-responsive" alt="" /></div>
+
+                        <div class="col-xs-10 col-md-11">
+                            <div>
+                                <a>  <%= u.firstname %>  <%= u.lastname %> </a>
+                                <div class="mic-info">
+                                    <a>email</a>: <%= u.mail %><br>
+                                    <span class="city"> <%= u.city %></span>
+
+                                </div>
+                            </div>
+                            <div class="action">
+<a href="/api/user/<%= u._id %> ">more details</a>                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </li>
+  <% }); %>
+            </ul>
+        </div>
+    </div>
+</div>
+</div>
+</div>
+</div>
+<br><br><br><br><br><br><br><br><br>
+<!-- /#wrapper -->
+
+<!-- jQuery -->
+<script src="js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="js/bootstrap.min.js"></script>
+
+<!-- Morris Charts JavaScript -->
+<script src="js/plugins/morris/raphael.min.js"></script>
+<script src="js/plugins/morris/morris.min.js"></script>
+<script src="js/plugins/morris/morris-data.js"></script>
+
+    <script>
+
+//     function showResult(result) {
+//     x = result.geometry.location.lat();
+//     y= result.geometry.location.lng();
+//     var T=[x,y];
+//     //console.log(T[0]);
+//     return T;
+// }
+
+var a=[];
+
+function initMap(result) {
+  x = result.geometry.location.lat();
+  y= result.geometry.location.lng();
+
+
+  var myLatLng = {lat: x, lng: y};
+
+  // Create a map object and specify the DOM element for display.
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: myLatLng,
+    scrollwheel: false,
+    zoom: 4
+  });
+//console.log(myLatLng.lat);
+  // Create a marker and set its position.
+
+  for(var i =0;i<a.length;i++){
+    var marker = new google.maps.Marker({
+      map: map,
+      position: a[i],
+      title: 'Hello World!'
+    });
+}
+  a.push(myLatLng)
+
+  var marker = new google.maps.Marker({
+    map: map,
+    position: myLatLng,
+    title: 'Hello World!'
+  });
+
+}
+
+
+    function getLatitudeLongitude(callback, address) {
+    // If adress is not supplied, use default value 'Ferrol, Galicia, Spain'
+    address = address || 'Ferrol, Galicia, Spain';
+    // Initialize the Geocoder
+    geocoder = new google.maps.Geocoder();
+    if (geocoder) {
+        geocoder.geocode({
+            'address': address
+        }, function (results, status) {
+            if (status == google.maps.GeocoderStatus.OK) {
+                callback(results[0]);
+            }
+        });
+    }
+}
+var button = document.getElementById('btn');
+
+button.addEventListener("click", function () {
+    var address = document.getElementsByClassName("city");
+    var k=address.length;
+    for(var i=0;i<k;i++){
+    getLatitudeLongitude(initMap, address[i].innerText);
+      }
+});
+
+
+
+
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCq-dGCTg-qoK62ZFu5TVUEkMbdU8Uyfk0&callback=initMap"
+        async defer></script>
+  </body>
+</html>
